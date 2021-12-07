@@ -1,0 +1,149 @@
+<div class="row">
+  <div class="col-md-9">
+    <h1 class="display-4"><span>Welcome to Trash Basketball!</span> </h1>
+  </div>
+  <div class="col-md-9">
+    The Rules:
+  </div>
+  <div class="col-md-9">
+    1) Register
+  </div>
+  <div class="col-md-9">
+    2) Shoot your shot
+  </div>
+  <div class="col-md-9">
+    3) Fill Out form
+  </div>
+  <div class="col-md-9">
+    4) Upload score ( highest score uploaded per day is counted towards your total)
+  </div>
+  <div class="col-md-9">
+    5) Dominate the competition ( no cheating )
+  </div>
+</div>
+<hr>
+<div class="row" *ngIf="account">
+<div class="col-md-9">
+  How to fill out Form:
+</div>
+<div class="col-md-9">
+  Linear Tiles : Number of tiles between you and the trash, does not include the tile you are on and the trash can is on.
+</div>
+<div class="col-md-9">
+  Offset Tiles : Number of tiles you are offset from the center. Does not include the tile you are on.
+</div>
+<div class="col-md-9">
+  Top Net Too? : Select this if your trash went through the top basketball net as well as going in the trashcan
+</div>
+<div class="col-md-9">
+  Trick : select the type of shot you took, normal is any shot that does not fall into the other trick shots.
+</div>
+</div>
+<hr>
+<div class="row" *ngIf="account">
+  <div class="col-md-9">
+    YOU PEOPLE LOVE TO EXPLOIT RULES SO HERE ARE EXTRA RULES. Violators will be DQed
+  </div>
+  <div class="col-md-9">
+    1) Valid trash = Paper towels only no weird objects and no weighting the paper. I'm looking at you alex... banana boy
+  </div>
+  <div class="col-md-9">
+    2) Each piece of trash can only be shot once. If you miss you are not allowed to use that same trash again.
+  </div>
+  <div class="col-md-9">
+    3) Do not generate trash just to shoot.IE using clean papertowel
+  </div>
+  <div class="col-md-9">
+    4) Trick Shots : behind the back must be shot while still standing strait up. Between the legs is like the football long snap position not a granny shot.
+  </div>
+</div>
+<hr>
+<div class = "row" *ngIf="account">
+    <div class="col-md-9">
+      Scoring:
+    </div>
+    <div class="col-md-9">
+      1 point per tile from trash. 1/2 point per tile offset from center. That score is then multiplied by the value of 1 + trick multiplier if only hit the trash. Or 2 +trick multipler if you hit both nets. Total value is rounded to nearest tenth
+    </div>
+    <div class="col-md-9">
+      Example: Linear Tiles = 2 , Offset = 2, Top Net = True, Behind the back : (2+2*.5) * 2.5 = 7.5
+    </div>
+
+</div>
+<hr>
+<div class = "col" *ngIf="account">
+      <div>Examples:</div>
+      <div>green = inline tiles, blue = offset tiles</div>
+      <img src="../../content/images/Offset.png" alt="Offset" width="300" height="200">
+      <img src="../../content/images/Inline.png" alt="Offset" width="300" height="200">
+</div>
+<div class="row">
+  <div class="col-md-9">
+
+    <div [ngSwitch]="account !== null">
+      <div class="alert alert-success" *ngSwitchCase="true">
+        <span id="home-logged-message" *ngIf="account">You are logged in as user "{{ account.login }}". Your total score is {{currentScore}} </span>
+
+        <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+          <div>
+            <label for="score">
+              Linear Tiles
+            </label>
+            <input id="score" type="text" formControlName="score">
+          </div>
+          <div>
+            <label for="offsetscore">
+              Offset Tiles
+            </label>
+            <input id="offsetscore" type="text" formControlName="offsetscore">
+            </div>
+            <div>
+              <label for="topNet">
+                Top Net Too?
+              </label>
+              <input id="topNet" type="checkbox" formControlName="topNet">
+              </div>
+              <div>
+                <label for="trick">Trick:</label>
+                <div>
+                  <input id="normal" type="radio" value="normal" name="trick" formControlName="trick">
+                  <label for="normal">Normal</label>
+               </div>
+
+               <div>
+                <input id="behind" type="radio" value="behind" name="trick" formControlName="trick">
+                <label for="behind">Behind the Back (+ 5 multiplier)</label>
+               </div>
+               <div>
+                <input id="hook" type="radio" value="hook" name="trick" formControlName="trick">
+                <label for="hock">Hook Shot (+ .75 multiplier)</label>
+               </div>
+               <div>
+                <input id="between" type="radio" value="between" name="trick" formControlName="trick">
+                <label for="between">Between the Legs (+  1 multiplier)</label>
+               </div>
+              </div>
+          <button class="button" type="submit" [disabled]="!checkoutForm.valid">Submit</button>
+        </form>
+      </div>
+
+      <div class="alert alert-warning" *ngSwitchCase="false">
+        <span>You don't have an account yet?</span>&nbsp;
+        <a class="alert-link" routerLink="account/register">Register a new account</a>
+        <div></div>
+        <span>Log In?</span>&nbsp;
+        <a class="alert-link" routerLink="login">Log In</a>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<div [ngSwitch]="account !== null">
+  <div class="alert alert-success" *ngSwitchCase="true">
+  HIGH SCORES:
+  <tr *ngFor="let score of score;let i = index">
+    <td>{{i}}.  {{score.login}}  {{score.totalscore!/10}}</td>
+  </tr>
+  </div>
+</div>
